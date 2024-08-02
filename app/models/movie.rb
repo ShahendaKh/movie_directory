@@ -13,4 +13,9 @@ class Movie < ApplicationRecord
   has_many :actors, through: :movie_actors, source: :actor
   has_many :reviews, dependent: :destroy
   belongs_to :director
+
+  ###################### Nested Attributes ######################
+  accepts_nested_attributes_for :director
+  accepts_nested_attributes_for :actors, allow_destroy: true
+  accepts_nested_attributes_for :filming_locations, allow_destroy: true
 end
