@@ -10,7 +10,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_02_111401) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_02_115421) do
+  create_table "filming_locations", force: :cascade do |t|
+    t.string "name"
+    t.string "country_code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name", "country_code"], name: "unique_index_location_name_and_country_code", unique: true
+  end
+
+  create_table "movie_filming_locations", force: :cascade do |t|
+    t.integer "movie_id"
+    t.integer "filming_location_id"
+    t.index ["filming_location_id"], name: "index_movie_filming_locations_on_filming_location_id"
+    t.index ["movie_id"], name: "index_movie_filming_locations_on_movie_id"
+  end
+
+  create_table "movie_people", force: :cascade do |t|
+    t.integer "movie_id"
+    t.integer "person_id"
+    t.index ["movie_id"], name: "index_movie_people_on_movie_id"
+    t.index ["person_id"], name: "index_movie_people_on_person_id"
+  end
+
+  create_table "movies", force: :cascade do |t|
+    t.string "title"
+    t.string "description"
+    t.integer "year"
+    t.integer "director_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["director_id"], name: "index_movies_on_director_id"
+    t.index ["title"], name: "index_movies_on_title", unique: true
+  end
+
   create_table "people", force: :cascade do |t|
     t.string "name", null: false
     t.string "type", null: false
@@ -18,4 +51,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_02_111401) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "movies", "people", column: "director_id"
 end
